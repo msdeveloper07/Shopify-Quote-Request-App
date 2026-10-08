@@ -1,142 +1,81 @@
-\# Shopify Quote Request App
+# ShowQuote — Shopify Quote Request App
 
+ShowQuote is a Shopify application designed to help merchants manage product quote requests instead of relying exclusively on the standard purchase flow.
 
+## Features
 
-A Shopify application built with Laravel that helps merchants collect customer quote requests, manage them through a dashboard, and send quotations by email.
+* **Get a Quote flow:** Provides a quote-request experience on supported Shopify storefront product pages.
+* **Quote management:** Supports a merchant-side dashboard for viewing quote requests.
+* **Email quotations:** Integrates with SendGrid for email-related functionality.
+* **Shopify integration:** Uses Shopify app configuration, app proxy, and script-tag functionality.
 
+## Tech Stack
 
+* PHP 8.2+
+* Laravel 12
+* JavaScript, CSS
+* Vite and Tailwind CSS
+* SendGrid
+* Shopify
 
-\## Features
+## Local Development
 
+### Prerequisites
 
+* PHP 8.2 or compatible version
+* Composer
+* Node.js and npm
+* A configured Shopify development environment
+* Required database and email settings
 
-\* \*\*Get a Quote experience\*\* for Shopify storefronts.
+### Setup
 
-\* \*\*Quote request management\*\* through a merchant dashboard.
+1. Install PHP dependencies:
 
-\* \*\*Email integration\*\* for sending quotations to customers.
+   ```bash
+   composer install
+   ```
 
-\* \*\*Shopify integration\*\* using app configuration, app proxy, and storefront script functionality.
+2. Create your local environment configuration:
 
+   ```bash
+   cp .env.example .env
+   ```
 
+   On Windows, copy `.env.example` to `.env` manually if needed.
 
-\## Tech Stack
+3. Generate the Laravel application key:
 
+   ```bash
+   php artisan key:generate
+   ```
 
+4. Configure the database, Shopify credentials, and email settings in `.env`.
 
-\* PHP 8.2+
+5. Install frontend dependencies:
 
-\* Laravel 12
+   ```bash
+   npm install
+   ```
 
-\* JavaScript and CSS
+6. Build frontend assets:
 
-\* Vite
+   ```bash
+   npm run build
+   ```
 
-\* Tailwind CSS
+7. Configure the Shopify app URLs and required scopes for your own development environment before running the app.
 
-\* SendGrid
+## Configuration and Security
 
-\* Shopify
+* Never commit `.env`, API keys, access tokens, customer information, or session files.
+* Use development-store credentials and URLs appropriate to your environment.
+* Do not reuse production or client credentials in personal development environments.
 
+## Project Status
 
+Setup and feature documentation should be verified against the current implementation before deployment.
 
-\## Requirements
+## License
 
-
-
-\* PHP 8.2 or later
-
-\* Composer
-
-\* Node.js and npm
-
-\* A Shopify development store and app configuration
-
-\* Database and email credentials
-
-
-
-\## Local Setup
-
-
-
-1\. Install PHP dependencies:
-
-
-
-&#x20;  ```bash
-
-&#x20;  composer install
-
-&#x20;  ```
-
-
-
-2\. Copy `.env.example` to `.env`.
-
-
-
-3\. Generate the Laravel application key:
-
-
-
-&#x20;  ```bash
-
-&#x20;  php artisan key:generate
-
-&#x20;  ```
-
-
-
-4\. Configure the database, Shopify settings, and email credentials in `.env`.
-
-
-
-5\. Install frontend dependencies:
-
-
-
-&#x20;  ```bash
-
-&#x20;  npm install
-
-&#x20;  ```
-
-
-
-6\. Build frontend assets:
-
-
-
-&#x20;  ```bash
-
-&#x20;  npm run build
-
-&#x20;  ```
-
-
-
-7\. Configure the Shopify app URLs and permissions for your development environment before running the app.
-
-
-
-\## Security
-
-
-
-\* Never commit `.env` files, API keys, access tokens, or customer data.
-
-\* Keep runtime files and session data out of version control.
-
-\* Use your own development credentials and Shopify store when testing.
-
-
-
-\## License
-
-
-
-Check the applicable project license and distribution permissions before redistributing this application.
-
-
-
+Confirm the applicable project license and distribution permissions before publishing or redistributing this code.
