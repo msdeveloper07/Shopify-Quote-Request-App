@@ -1,0 +1,285 @@
+(function () {
+    console.warn('Be Ready!!!');
+  if (!window.location.href.includes("/products/")) return;
+
+  function loadExternalCSS() {
+  const baseUrl = 'https://web.cyberbells.com/development/patio_shopify_app/public';
+  const cssUrl = `${baseUrl}/shopify/quote.css`;
+  if (!document.querySelector(`link[href="${cssUrl}"]`)) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = cssUrl;
+    link.type = 'text/css';
+    link.media = 'all';
+    document.head.appendChild(link);
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', loadExternalCSS);
+} else {
+  loadExternalCSS();
+}
+
+//   const button = document.createElement('button');
+//   button.innerText = 'Get a Quote';
+//   // button.style = 'padding: 10px 20px; background: #000; color: #fff; border: none; cursor: pointer; margin-top: 20px;';
+//   button.onclick = openQuoteModal;
+
+//   const checkExist = setInterval(() => {
+//     const form = document.querySelector('form[action*="/cart/add"]');
+//     if (form && !document.getElementById('addToQuoteBtn')) {
+//       button.id = 'addToQuoteBtn';
+//       form.parentNode.insertBefore(button, form.nextSibling);
+//       clearInterval(checkExist);
+//     }
+//   }, 500);
+
+    const button = document.createElement('button');
+    button.innerText = 'Get a Quote';
+    button.id = 'addToQuoteBtn';
+    button.style = 'padding: 10px 20px; background: #000; color: #fff; border: none; cursor: pointer; margin-top: 20px;';
+    button.onclick = openQuoteModal;
+    
+    const checkExist = setInterval(() => {
+      // Select the product title element
+      const titleEl = document.querySelector('.product-single__title, h1.product-title, .product__title');
+      
+      if (titleEl && !document.getElementById('addToQuoteBtn')) {
+        titleEl.insertAdjacentElement('afterend', button); // Insert right after title
+        clearInterval(checkExist);
+      }
+    }, 500);
+
+
+
+  function openQuoteModal() {
+  const productTitle = document.querySelector('h1')?.innerText || '';
+  let productImg = '';
+  try {
+    // 1. Try to get selected image from the visible product gallery
+    const galleryImg = document.querySelector('.product__media img, .product-gallery img');
+    if (galleryImg && galleryImg.src) {
+      productImg = galleryImg.src;
+    }
+
+    // 2. Fallback to Shopify JSON product object
+    if (!productImg) {
+      const productData = window.meta?.product || JSON.parse(document.querySelector('[type="application/json"]#ProductJson-product-template')?.textContent || '{}');
+
+      // Use variant featured image if available
+      const firstVariantWithImage = productData.variants.find(v => v.featured_image && v.featured_image.src);
+      productImg = firstVariantWithImage?.featured_image?.src || productData.images?.[0] || '';
+    }
+
+    // 3. Last fallback: any image on the page
+    if (!productImg) {
+      productImg = document.querySelector('img')?.src || '';
+    }
+  } catch (e) {
+    console.warn("Image load error:", e);
+    productImg = document.querySelector('img')?.src || '';
+  }
+
+
+
+  const modalHtml = `
+    <div id="quoteModal" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;">
+      <div style="background:#fff;padding:20px;max-width:600px;width:90%;position:relative;border-radius:8px;">
+        <button onclick="document.getElementById('quoteModal').remove()" style="position:absolute;top:10px;right:10px;background:none;border:none;font-size:20px;cursor:pointer;">✕</button>
+        <div class="boxheading">Request a quote</div>
+        <div class="logoDiv">
+        <img src="${productImg}" alt="Product Image" style="max-height:150px;" />
+        </div>
+        <h2 style="margin-bottom:10px; font-weight: 400; text-align: center; margin-top: 0;">${productTitle}</h2>
+        <form id="quoteForm">
+          <input name="product_title" type="hidden" value="${productTitle}">
+          <div style="margin-bottom:10px;">
+            <label style="font-weight:bold;display:block;margin-bottom:4px;">Select Variant</label>
+            <select name="selected_variant" id="variantDropdown" style="width:100%;padding:8px;" required>
+              <option value="">Select a variant</option>
+            </select>
+            <div id="selected_variant_error" style="color:red;font-size:13px;margin-top:4px;"></div>
+          </div>
+
+          <div class="nameDivs">
+            <div style="margin-bottom:10px;width: 50%;float: left;padding-right: 5px;">
+              <label style="font-weight:bold; display:block; margin-bottom:4px;">First Name</label>
+              <input name="first_name" placeholder="First Name" style="width:100%;padding:8px;" />
+              <div id="first_name_error" style="color:red;font-size:13px;margin-top:4px;"></div>
+            </div>
+
+            <div style="margin-bottom:10px;width: 50%;float: left;padding-right: 5px;">
+              <label style="font-weight:bold; display:block; margin-bottom:4px;">Last Name</label>
+              <input name="last_name" placeholder="Last Name" style="width:100%;padding:8px;" />
+              <div id="last_name_error" style="color:red;font-size:13px;margin-top:4px;"></div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:10px;">
+            <label style="font-weight:bold; display:block; margin-bottom:4px;">Your Email</label>
+            <input name="email" type="email" placeholder="Your Email" style="width:100%;padding:8px;" />
+            <div id="email_error" style="color:red;font-size:13px;margin-top:4px;"></div>
+          </div>
+
+          <div style="margin-bottom:10px;">
+            <label style="font-weight:bold; display:block; margin-bottom:4px;">Any comments or suggestions?</label>
+            <textarea name="comments" placeholder="Any comments or suggestions?" style="width:100%;padding:8px;height:80px;"></textarea>
+            <div id="comments_error" style="color:red;font-size:13px;margin-top:4px;"></div>
+          </div>
+
+          <div id="loader" style="display:none;text-align:center;margin-top:10px;">
+            <img src="https://i.imgur.com/llF5iyg.gif" alt="Loading..." style="width:30px;height:30px;" />
+          </div>
+
+          <button type="submit" style="padding:10px 20px;background:#000;color:#fff;border:none;cursor:pointer;width:100%;">Submit</button>
+        </form>
+      </div>
+    </div>
+    <div id="quoteToast" style="display:none;position:fixed;top:20px;right:20px;background:#16a34a;color:#fff;padding:10px 20px;border-radius:5px;z-index:99999;"></div>
+  `;
+
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = modalHtml;
+  document.body.appendChild(wrapper);
+
+  const form = document.getElementById('quoteForm');
+  try {
+    const productData = window.meta?.product || JSON.parse(document.querySelector('[type="application/json"]#ProductJson-product-template')?.textContent || '{}');
+    const variantDropdown = document.getElementById('variantDropdown');
+
+    variantDropdown.innerHTML = '<option value="">Select a variant</option>'; // reset
+
+    if (productData.variants && productData.variants.length) {
+      productData.variants.forEach(v => {
+        const option = document.createElement('option');
+        option.value = v.name;   // v.id
+        option.textContent = `${v.name} - ₹${(v.price / 100).toFixed(2)}`;
+        variantDropdown.appendChild(option);
+      });
+    } else {
+      variantDropdown.innerHTML = '<option>No variants found</option>';
+    }
+  } catch (e) {
+    console.warn("Variant loading error", e);
+    const variantDropdown = document.getElementById('variantDropdown');
+    variantDropdown.innerHTML = '<option>Error loading variants</option>';
+  }
+
+  // 👉 Load all variants
+  // try {
+  //   const productData = window.meta?.product || JSON.parse(document.querySelector('[type="application/json"]#ProductJson-product-template')?.textContent || '{}');
+  //   const variantDropdown = document.getElementById('variantDropdown');
+  //   variantDropdown.innerHTML = '';
+  //   if (productData.variants && productData.variants.length) {
+  //     productData.variants.forEach(v => {
+  //       const option = document.createElement('option');
+  //       option.value = v.name;
+  //       option.textContent = `${v.name} - ₹${(v.price / 100).toFixed(2)}`;
+  //       variantDropdown.appendChild(option);
+  //     });
+  //   } else {
+  //     variantDropdown.innerHTML = '<option>No variants found</option>';
+  //   }
+  // } catch (e) {
+  //   console.warn("Variant loading error", e);
+  // }
+
+  // Real-time validation
+  form.querySelectorAll('input, textarea, select').forEach(input => {
+    input.addEventListener('blur', () => validateField(input));
+    input.addEventListener('input', () => validateField(input));
+  });
+
+  function validateField(input) {
+    const name = input.name;
+    const value = input.value.trim();
+    const errorEl = document.getElementById(`${name}_error`);
+    errorEl.textContent = "";
+
+    if (name === "first_name" && value === "") {
+      errorEl.textContent = "First name is required.";
+    } else if (name === "last_name" && value === "") {
+      errorEl.textContent = "Last name is required.";
+    } else if (name === "email") {
+      if (value === "") {
+        errorEl.textContent = "Email is required.";
+      } else if (!/^\S+@\S+\.\S+$/.test(value)) {
+        errorEl.textContent = "Email format is invalid.";
+      }
+    } else if (name === "comments" && value.length < 5) {
+      errorEl.textContent = "Comment must be at least 5 characters.";
+    } else if (name === "selected_variant" && value === "") {
+      errorEl.textContent = "Please select a variant.";
+    }
+  }
+
+  function validateForm(data) {
+    let hasError = false;
+    let focusField = null;
+
+    ['first_name', 'last_name', 'email', 'comments', 'selected_variant'].forEach(name => {
+      const input = form.querySelector(`[name="${name}"]`);
+      validateField(input);
+      if (!focusField && document.getElementById(`${name}_error`).textContent) {
+        focusField = input;
+        hasError = true;
+      }
+    });
+
+    if (hasError) focusField.focus();
+    return !hasError;
+  }
+
+  form.onsubmit = async function (e) {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    if (!validateForm(data)) return;
+
+    const shop = window.Shopify?.shop;
+    if (!shop) {
+      showToast("Unable to detect shop domain", "red");
+      return;
+    }
+
+    const loader = document.getElementById("loader");
+    loader.style.display = "block";
+
+    try {
+        const res = await fetch(`/apps/submit-quote?shop=${shop}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(data),
+        });
+
+
+      const response = await res.json();
+      loader.style.display = "none";
+
+      if (res.ok && response.status === 'success') {
+        showToast("Quote submitted successfully!", "green");
+        document.getElementById('quoteModal')?.remove();
+      } else {
+        showToast("Submission failed. Try again.", "red");
+      }
+    } catch (error) {
+      loader.style.display = "none";
+      console.error(error);
+      showToast("Error submitting quote", "red");
+    }
+  };
+}
+
+  function showToast(message, type = "green") {
+    const toast = document.getElementById('quoteToast');
+    if (!toast) return;
+    toast.textContent = message;
+    toast.style.background = type === "green" ? "#16a34a" : "#dc2626";
+    toast.style.display = "block";
+    setTimeout(() => {
+      toast.style.display = "none";
+    }, 4000);
+  }
+})();

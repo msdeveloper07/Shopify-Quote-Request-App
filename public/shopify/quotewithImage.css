@@ -1,0 +1,355 @@
+/* Modal Overlay */
+#quoteModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* Modal Content Container */
+#modalContent {
+    background: #f3f3f3;
+    padding: 50px;
+    max-width: 1000px;
+    width: 100%;
+    min-height: fit-content;
+    max-height: 90vh;
+    position: relative;
+    border-radius: 12px;
+    margin: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+/* Close Button */
+#closeButton {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+    z-index: 10;
+    padding: 5px;
+    line-height: 1;
+}
+
+#closeButton:hover {
+    color: #000;
+}
+
+/* Box Heading */
+.boxheading {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+    height: fit-content;
+    text-align: center;
+}
+
+/* Image Container */
+.logoDiv {
+    margin-bottom: 0px;
+    max-width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    height: fit-content;
+}
+
+#modalProductImage {
+    max-height: 300px;
+    width: 100%;
+    height: auto;
+    transition: opacity 0.3s ease;
+    object-fit: contain;
+}
+
+/* Product Title */
+#productTitle {
+    margin-top: 0px;
+    font-weight: 900;
+    text-align: center;
+    font-size: 20px;
+    color: #333;
+}
+
+/* Form Styling */
+#quoteForm {
+    margin-top: 10px;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Name Divs - Row Container */
+.nameDivs {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    margin-bottom: 0px;
+}
+
+/* Form Group */
+.formGroup {
+    margin-bottom: 0px;
+    padding: 0px;
+    width: 100%;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+/* Labels */
+.formGroup label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 2px;
+    font-size: 12px;
+    color: #333;
+}
+
+/* Input Fields */
+.formGroup input,
+.formGroup select,
+.formGroup textarea {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    font-size: 12px;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+
+.formGroup input:focus,
+.formGroup select:focus,
+.formGroup textarea:focus {
+    outline: none;
+    border-color: #45739e;
+    box-shadow: 0 0 0 2px rgba(69, 115, 158, 0.1);
+}
+
+/* Textarea */
+.formGroup textarea {
+    height: 90px;
+    resize: vertical;
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+}
+
+/* Error Messages */
+.error {
+    color: #d32f2f;
+    font-size: 12px;
+    margin-top: 4px;
+    min-height: 12px;
+}
+
+/* Loader */
+#loader {
+    display: none;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#loader img {
+    width: 25px;
+    height: 25px;
+}
+
+/* Submit Button */
+#submitButton {
+    padding: 10px 10px;
+    background: #45739e;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 4px;
+    margin-top: 5px;
+    transition: background 0.3s ease;
+}
+
+#submitButton:hover {
+    background: #3a6188;
+}
+
+#submitButton:active {
+    background: #2f5070;
+}
+
+/* Quantity Input */
+#quantity {
+    width: 100%;
+
+}
+
+/* Variant Dropdown */
+#variantDropdown {
+    width: 100%;
+    padding:8px 12px;
+    border:1.5px solid black;
+    border-radius:0px;
+    font-size: 13px;
+    background-color: #fff;
+    font-size: 13px;
+    background-color: #fff;
+    
+}
+
+
+
+
+
+/* Tablet (Portrait) - 600px to 768px */
+@media (max-width: 768px) and (min-width: 601px) {
+    #modalContent {
+        padding: 35px;
+        max-width: 700px;
+        gap: 18px;
+    }
+
+    .logoDiv {
+        max-width: 45%;
+        margin-bottom: 1px;
+        gap: 0.1rem;
+    }
+
+    #modalProductImage {
+        max-height: 250px;
+    }
+
+    #productTitle {
+        font-size: 18px;
+    }
+
+    .boxheading {
+        font-size: 16px;
+    }
+
+    #quoteForm {
+        width: 50%;
+    }
+
+    .formGroup label {
+        font-size: 11px;
+    }
+
+    .formGroup input,
+    .formGroup select,
+    .formGroup textarea {
+        padding: 6px;
+        font-size: 11px;
+    }
+
+    .formGroup textarea {
+        height: 80px;
+    }
+
+    #submitButton {
+        padding: 9px;
+        font-size: 13px;
+    }
+}
+
+/* Mobile - 600px and below */
+@media (max-width: 600px) {
+    #quoteModal {
+        padding: 10px;
+        align-items: flex-start;
+    }
+
+    #modalContent {
+        flex-direction: column;
+        padding: 15px 15px;
+        height: auto;
+        max-height: 90vh;
+        overflow-y: auto;
+        gap: 12px;
+        border-radius: 8px;
+        max-width: 350px;
+    }
+
+    #closeButton {
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
+    }
+
+    .logoDiv {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 1px;
+        gap: 0.1rem;
+    }
+
+    #modalProductImage {
+        max-height: 150px;
+    }
+
+    #productTitle {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    .productInfoDiv {
+        display: flex;
+    }
+
+    .boxheading {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    #quoteForm {
+        width: 100%;
+        max-height: none;
+        margin-top: 8px;
+    }
+
+    .formGroup label {
+        font-size: 11px;
+    }
+
+    .formGroup input,
+    .formGroup select,
+    .formGroup textarea {
+        padding: 6px;
+        font-size: 11px;
+    }
+
+    .formGroup textarea {
+        height: 70px;
+    }
+
+    .error {
+        font-size: 10px;
+        min-height: 10px;
+    }
+
+    #submitButton {
+        padding: 9px;
+        font-size: 13px;
+    }
+
+
+}

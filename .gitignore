@@ -1,0 +1,51 @@
+*.log
+.DS_Store
+.env
+.env.backup
+.env.production
+.phpactor.json
+.phpunit.result.cache
+/.fleet
+/.idea
+/.nova
+/.phpunit.cache
+/.vscode
+/.zed
+/auth.json
+/node_modules
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/storage/pail
+/vendor
+Homestead.json
+Homestead.yaml
+Thumbs.db
+composer.lock
+npm-debug.log
+yarn-error.log
+# Runtime and temporary files
+/storage/framework/sessions/*
+/storage/framework/cache/*
+/storage/framework/views/*
+/bootstrap/cache/*
+/.ftpquota
+
+# Local environment secrets
+.env.*
+!.env.example
+
+# Laravel runtime data
+/storage/logs/*
+!/storage/logs/.gitignore
+/storage/framework/sessions/*
+/storage/framework/cache/*
+/storage/framework/views/*
+/bootstrap/cache/*
+!/bootstrap/cache/.gitignore
+
+# Server-specific file
+/.ftpquota
+
+

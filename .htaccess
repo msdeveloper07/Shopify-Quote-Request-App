@@ -1,0 +1,47 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /development/patio_shopify_app_solvana/
+
+    # Preserve Authorization header (for signed proxy requests)
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Preserve custom XSRF header if you use one
+    RewriteCond %{HTTP:x-xsrf-token} .
+    RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
+
+    # ❌ IMPORTANT: DO NOT REDIRECT trailing slashes for the proxy endpoint.
+    # Shopify signs the exact URL; a 301 here breaks proxying and causes CORS-looking errors.
+    # If you must keep a trailing-slash rule for the rest of the site, guard it so it skips the proxy path.
+
+    # (Remove your old global trailing-slash redirect block entirely)
+    # If you really need it elsewhere, use this guarded version:
+    #RewriteCond %{REQUEST_URI} !^/development/patio_shopify_app_solvana/proxy/submit-quote-solvana$
+    #RewriteCond %{REQUEST_FILENAME} !-d
+    #RewriteCond %{REQUEST_URI} .+/$
+    #RewriteRule ^(.+?)\/$ /development/patio_shopify_app_solvana/$1 [L,R=301]
+
+    # Front controller (no redirects)
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+    
+    # Allow Shopify to frame this page
+    Header always unset X-Frame-Options
+    Header always set Content-Security-Policy "frame-ancestors https://admin.shopify.com https://*.myshopify.com;"
+    
+    # Protect sensitive files/dirs
+    <Files .env>
+        Require all denied
+    </Files>
+    <FilesMatch "^(\.env|\.git|composer\.(json|lock)|artisan)$">
+        Require all denied
+    </FilesMatch>
+    RedirectMatch 403 ^/storage/.*$
+    RedirectMatch 403 ^/bootstrap/.*$
+    RedirectMatch 403 ^/config/.*$
+    RedirectMatch 403 ^/database/.*$
+    RedirectMatch 403 ^/resources/.*$
+    RedirectMatch 403 ^/routes/.*$
+    RedirectMatch 403 ^/vendor/.*$
+</IfModule>

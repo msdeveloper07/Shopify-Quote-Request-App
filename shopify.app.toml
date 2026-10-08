@@ -1,0 +1,30 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "8094c677123f992e3376218494ffa1a6"
+name = "ShowQuote"
+application_url = "https://recruitment-wellness-represents-combinations.trycloudflare.com"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "shaw-supply.myshopify.com"
+
+[webhooks]
+api_version = "2025-10"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_customers,read_inventory,read_locations,read_products,read_script_tags,write_customers,write_script_tags"
+
+[auth]
+redirect_urls = [
+  "https://recruitment-wellness-represents-combinations.trycloudflare.com/shopify/callback"
+]
+
+[app_proxy]
+url = "https://recruitment-wellness-represents-combinations.trycloudflare.com"
+subpath = "quote-guard"
+prefix = "apps"
+
+[pos]
+embedded = false
